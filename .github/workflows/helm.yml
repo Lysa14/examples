@@ -46,7 +46,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            ./helm/*
+            ./charts/*
           tag_name: ${{ github.ref }}
           name: Release ${{ steps.version.outputs.version }}
           body: |
