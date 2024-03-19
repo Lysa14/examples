@@ -1,0 +1,57 @@
+name: Release Workflow
+
+on:
+  push:
+    tags:
+      - 'v*' # Déclenche le flux de travail lorsqu'un tag est poussé avec le format v1.0.0 par exemple
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v1
+        with:
+          version: 'v3.5.4' 
+
+      - name: Install dependencies
+        run: helm dependency update helm/hello-world
+
+      - name: Package chart
+        run: helm package helm/hello-world -d ./helm
+
+  release:
+    runs-on: ubuntu-latest
+
+    needs: build
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v1
+        with:
+          version: 'v3.5.4' # Spécifiez la version de Helm à utiliser
+
+      - name: Extract chart version
+        id: version
+        run: |
+            echo "::set-output name=version::$(grep -m1 '^version: ' helm/your-chart/Chart.yaml | awk '{print $2}')"
+
+      - name: Create release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            ./helm/*.tgz
+          tag_name: ${{ github.ref }}
+          name: Release ${{ steps.version.outputs.version }}
+          body: |
+            test helm  release
+          draft: false
+          prerelease: false
+          token: ${{ secrets.GITHUB_TOKEN }}
