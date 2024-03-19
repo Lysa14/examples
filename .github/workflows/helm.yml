@@ -2,9 +2,8 @@ name: Release Workflow
 
 on:
   push:
-    tags:
-      - 'v*' # Déclenche le flux de travail lorsqu'un tag est poussé avec le format v1.0.0 par exemple
-
+    branches:
+      - ci
 jobs:
   build:
     runs-on: ubuntu-latest
