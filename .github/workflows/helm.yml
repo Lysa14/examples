@@ -42,12 +42,11 @@ jobs:
       - name: Create release
         uses: softprops/action-gh-release@v1
         with:
+          body_path: ${{ github.workspace }}-CHANGELOG.txt
           files: |
-            charts/*
-          tag_name: ${{ github.ref }}
+            helm/*.tgz
+          tag_name: Helm-test-Realease     
           name: test
-          body: |
-            test Helm release
           draft: false
           prerelease: false
           token: ${{ secrets.GITHUB_TOKEN }}
