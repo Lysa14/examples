@@ -25,15 +25,7 @@ jobs:
 
       - name : Debug echo ls
         run: ls -lR
-  release:
-    runs-on: ubuntu-latest
 
-    needs: build
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
- 
       - name: Create release
         uses: softprops/action-gh-release@v1
         with:
