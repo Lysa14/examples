@@ -20,18 +20,10 @@ jobs:
 
       - name: Install dependencies and package charts
         run: |
-          for dir in $(find charts/hello-world -type d -name "hello-world-*"); do
+          for dir in $(find charts/hello-world -mindepth 1 -maxdepth 1 -type d); do
+            version=$(basename "$dir")
             helm dependency update "$dir"
-            version=$(basename "$dir" | sed 's/^hello-world-//')
             helm package "$dir" -d ./helm --version "$version"
-          done
-
-      - name: Rename chart files
-        run: |
-          cd ./helm
-          for file in *.tgz; do
-            version=$(echo "$file" | cut -d'-' -f2)
-            mv "$file" "hello-world-$version.tgz"
           done
 
       - name: Create release
@@ -45,3 +37,4 @@ jobs:
           draft: false
           prerelease: false
           token: ${{ secrets.GITHUB_TOKEN }}
+
