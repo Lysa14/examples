@@ -23,6 +23,8 @@ jobs:
       - name: Package chart
         run: helm package charts/hello-world -d ./helm
 
+      - name : Debug echo ls
+        run: ls -lR
   release:
     runs-on: ubuntu-latest
 
@@ -37,20 +39,15 @@ jobs:
         with:
           version: "v3.5.4" # Spécifiez la version de Helm à utiliser
 
-      - name: Extract chart version
-        id: version
-        run: |
-           echo "::set-output name=version::$(grep -m1 '^version: ' charts/hello-world/Chart.yaml | awk '{print $2}')"
-
       - name: Create release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            ./charts/*
+            charts/*
           tag_name: ${{ github.ref }}
-          name: Release ${{ steps.version.outputs.version }}
+          name: test
           body: |
-            test release
+            test Helm release
           draft: false
           prerelease: false
           token: ${{ secrets.GITHUB_TOKEN }}
