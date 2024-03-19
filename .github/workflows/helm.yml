@@ -21,12 +21,18 @@ jobs:
       - name: Install dependencies and Package chart
         run: |
             for dir in $(find charts/hello-world -type d -name "hello-world-*"); do
-                helm dependency update "$dir"
-                helm package "$dir" -d ./helm
+            helm dependency update "$dir"
+            version=$(basename "$dir")
+            helm package "$dir" -d ./helm --version "$version"
             done
-
-      - name : Debug echo ls
-        run: ls -lR
+     
+      - name: Rename chart files
+        run: |
+            cd ./helm
+            for file in *.tgz; do
+            version=$(echo "$file" | cut -d'-' -f2)
+            mv "$file" "hello-world-$version.tgz"
+            done
 
       - name: Create release
         uses: softprops/action-gh-release@v1
