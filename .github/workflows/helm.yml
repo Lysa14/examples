@@ -37,14 +37,14 @@ jobs:
       - name: Set up Helm
         uses: azure/setup-helm@v1
         with:
-          version: "v3.5.4" # Spécifiez la version de Helm à utiliser
+          version: "v3.5.4" 
 
       - name: Create release
         uses: softprops/action-gh-release@v1
         with:
           body_path: ${{ github.workspace }}/CHANGELOG.txt
           files: |
-           ${{ github.workspace }}/helm/*
+            ${{ github.workspace }}/helm/*.tgz
           tag_name: Helm-test-Realease     
           name: test
           draft: false
