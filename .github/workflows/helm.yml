@@ -17,19 +17,11 @@ jobs:
         with:
           version: "v3.5.4"
 
-      - name: Install dependencies
+     
+      - name: Install dependencies and Package chart
         run: |
             for dir in charts/hello-world/*/; do
-            helm dependency update "$dir"
-            done
-
-      
-      - name : Debug echo ls
-        run: ls -lR
-
-      - name: Package chart
-        run: |
-            for dir in charts/hello-world/*/; do
+                helm dependency update "$dir"
                 helm package "$dir" -d ./helm
             done
 
