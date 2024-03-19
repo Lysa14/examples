@@ -22,10 +22,9 @@ jobs:
         run: |
             for dir in $(find charts/hello-world -type d -name "hello-world-*"); do
             helm dependency update "$dir"
-            version=$(basename "$dir")
+            version=$(basename "$dir" | sed 's/hello-world-//')
             helm package "$dir" -d ./helm --version "$version"
-            done
-     
+             done
       - name: Rename chart files
         run: |
             cd ./helm
