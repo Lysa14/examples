@@ -32,8 +32,8 @@ jobs:
           body_path: ${{ github.workspace }}/CHANGELOG.txt
           files: |
             ${{ github.workspace }}/helm/*.tgz
-          tag_name: Helm-test-Realease     
-          name: test
+          tag_name: ${{ github.ref }}    
+          name:  Helm-test-Realease 
           draft: false
           prerelease: false
           token: ${{ secrets.GITHUB_TOKEN }}
