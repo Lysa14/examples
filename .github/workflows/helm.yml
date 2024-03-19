@@ -20,7 +20,7 @@ jobs:
      
       - name: Install dependencies and Package chart
         run: |
-            for dir in charts/hello-world/*/; do
+            for dir in $(find charts/hello-world -type d -name "hello-world-*"); do
                 helm dependency update "$dir"
                 helm package "$dir" -d ./helm
             done
