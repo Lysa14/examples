@@ -40,17 +40,19 @@ jobs:
       - name: Extract chart version
         id: version
         run: |
-            echo "::set-output name=version::$(grep -m1 '^version: ' charts/hello-world/Chart.yaml | awk '{print $2}')"
+      
+         run: echo "::set-output name=version::$(grep -m1 '^version: ' charts/hello-world/Chart.yaml | awk '{print $2}')"
+      
 
       - name: Create release
         uses: softprops/action-gh-release@v1
         with:
           files: |
-            ./helm/*.tgz
+            ./helm/*
           tag_name: ${{ github.ref }}
           name: Release ${{ steps.version.outputs.version }}
           body: |
-            Describe your release here
+            test release
           draft: false
           prerelease: false
           token: ${{ secrets.GITHUB_TOKEN }}
