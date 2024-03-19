@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - ci
+
 jobs:
   helm-release:
     runs-on: ubuntu-latest
@@ -17,21 +18,21 @@ jobs:
         with:
           version: "v3.5.4"
 
-     
-      - name: Install dependencies and Package chart
+      - name: Install dependencies and package charts
         run: |
-            for dir in $(find charts/hello-world -type d -name "hello-world-*"); do
+          for dir in $(find charts/hello-world -type d -name "hello-world-*"); do
             helm dependency update "$dir"
-            version=$(basename "$dir" | sed 's/hello-world-//')
+            version=$(basename "$dir" | sed 's/^hello-world-//')
             helm package "$dir" -d ./helm --version "$version"
-             done
+          done
+
       - name: Rename chart files
         run: |
-            cd ./helm
-            for file in *.tgz; do
+          cd ./helm
+          for file in *.tgz; do
             version=$(echo "$file" | cut -d'-' -f2)
             mv "$file" "hello-world-$version.tgz"
-            done
+          done
 
       - name: Create release
         uses: softprops/action-gh-release@v1
@@ -39,8 +40,8 @@ jobs:
           body_path: ${{ github.workspace }}/CHANGELOG.txt
           files: |
             ${{ github.workspace }}/helm/*.tgz
-          tag_name: tag   
-          name:  Helm-test-Realease 
+          tag_name: tag
+          name: Helm-test-Realease
           draft: false
           prerelease: false
           token: ${{ secrets.GITHUB_TOKEN }}
