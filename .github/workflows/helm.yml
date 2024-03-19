@@ -21,11 +21,10 @@ jobs:
       - name: Install dependencies and Package chart
         run: |
             for dir in $(find charts/hello-world -type d -name "hello-world-*"); do
-                helm dependency update "$dir"
-                version=$(cat "$dir/Chart.yaml" | grep version | awk '{print $2}')
-                helm package "$dir" -d ./helm --version "$version"
+            helm dependency update "$dir"
+            version=$(cat "$dir/Chart.yaml" | grep version | awk '{print $2}')
+            helm package "$dir" -d ./helm --version "$version"
             done
-
       - name : Debug echo ls
         run: ls -lR
 
