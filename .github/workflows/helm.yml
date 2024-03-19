@@ -15,7 +15,7 @@ jobs:
       - name: Set up Helm
         uses: azure/setup-helm@v1
         with:
-          version: 'v3.5.4' 
+          version: "v3.5.4"
 
       - name: Install dependencies
         run: helm dependency update charts/hello-world
@@ -35,14 +35,12 @@ jobs:
       - name: Set up Helm
         uses: azure/setup-helm@v1
         with:
-          version: 'v3.5.4' # Spécifiez la version de Helm à utiliser
+          version: "v3.5.4" # Spécifiez la version de Helm à utiliser
 
       - name: Extract chart version
         id: version
         run: |
-      
-         run: echo "::set-output name=version::$(grep -m1 '^version: ' charts/hello-world/Chart.yaml | awk '{print $2}')"
-      
+           echo "::set-output name=version::$(grep -m1 '^version: ' charts/hello-world/Chart.yaml | awk '{print $2}')"
 
       - name: Create release
         uses: softprops/action-gh-release@v1
