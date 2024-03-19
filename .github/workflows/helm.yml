@@ -26,6 +26,14 @@ jobs:
             helm package "$dir" -d ./helm --version "$version"
           done
 
+      - name: Rename chart files
+        run: |
+          cd ./helm
+          for file in *.tgz; do
+            version=$(echo "$file" | cut -d'-' -f2)
+            mv "$file" "hello-world-$version.tgz"
+          done
+
       - name: Create release
         uses: softprops/action-gh-release@v1
         with:
