@@ -42,9 +42,9 @@ jobs:
       - name: Create release
         uses: softprops/action-gh-release@v1
         with:
-          body_path: ${{ github.workspace }}-CHANGELOG.txt
+          body_path: ${{ github.workspace }}/CHANGELOG.txt
           files: |
-            helm/*.tgz
+           ${{ github.workspace }}/helm/*
           tag_name: Helm-test-Realease     
           name: test
           draft: false
