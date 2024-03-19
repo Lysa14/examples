@@ -23,6 +23,10 @@ jobs:
             helm dependency update "$dir"
             done
 
+      
+      - name : Debug echo ls
+        run: ls -lR
+
       - name: Package chart
         run: |
             for dir in charts/hello-world/*/; do
